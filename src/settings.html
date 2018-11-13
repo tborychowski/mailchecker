@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<head>
+<meta charset=UTF-8>
+<title>MailChecker Settings</title>
+<style>
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; box-sizing: border-box; }
+body * { box-sizing: inherit; }
+body { -webkit-app-region: drag; font: normal 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+body.dark { color: #eee; }
+form { width: 100%; height: 100%; display: flex; flex-flow: column; }
+h1 { padding: 0; margin: 0; font-size: 20px; font-weight: 300; }
+label, input, button { font: inherit; padding: 5px 0;  }
+input, button { border-radius: 4px; border: none; box-shadow: 0 1px 2px #0009; padding: 5px 10px; }
+button { margin: 0 5px; padding: 5px 20px; }
+label { user-select: none; }
+button[type=submit] { font-weight: bold; }
+.form-header,
+.form-footer {
+	background: #3333;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+}
+.form-content {
+	flex: 1;
+	padding: 10px 25px;
+	display: flex;
+	flex-flow: column;
+	align-items: stretch;
+	justify-content: space-around;
+	background: #fff3;
+}
+.form-row { display: flex; flex-flow: row; align-items: center; justify-content: space-between; }
+</style>
+</head>
+<body>
+	<form id="settingsForm">
+		<h1 class="form-header">MailChecker Settings</h1>
+		<div class="form-content">
+			<div class="form-row"><label>Main URL</label><input name="url" autofocus placeholder="Open on notification click"></div>
+			<div class="form-row"><label>Username</label><input name="user"></div>
+			<div class="form-row"><label>Password</label><input name="password" type="password"></div>
+			<div class="form-row"><label>IMAP host</label><input name="host"></div>
+			<div class="form-row"><label>IMAP port</label><input name="port"></div>
+			<div class="form-row"><label>Freq. (min)</label><input name="freq" value="5"></div>
+		</div>
+		<div class="form-footer">
+			<button type="button" id="btnClose">Close</button>
+			<button type="submit">Save</button>
+		</div>
+	</form>
+
+<script>
+const {ipcRenderer} = require('electron');
+
+const post = (action = 'close', data = {}) => ipcRenderer.send('settings', { action, data });
+const form = document.querySelector('#settingsForm');
+const btnClose = document.querySelector('#btnClose');
+
+ipcRenderer.on('isDark', (event, isDark) => document.body.classList.toggle('dark', isDark));
+ipcRenderer.on('settings', (event, settings) => writeFormData(form, settings));
+
+btnClose.addEventListener('click', () => post('close'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') post('close'); });
+
+
+form.addEventListener('submit', e => {
+	e.preventDefault();
+	post('save', readFormData(e.target));
+});
+
+function readFormData (form) {
+	const formData = new FormData(form);
+	const data = {};
+	for (let [name, val] of formData.entries()) data[name] = val;
+	return data;
+}
+
+function writeFormData(form, data) {
+	for (let [name, val] of Object.entries(data)) {
+		if (form.elements[name]) form.elements[name].value = val;
+	}
+}
+
+</script>
+</body>

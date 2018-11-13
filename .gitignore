@@ -1,0 +1,9 @@
+node_modules/
+dist/
+_stuff/
+
+app-update.yml
+
+.DS_Store
+*.log
+*.lock

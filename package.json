@@ -1,0 +1,36 @@
+{
+  "name": "mailchecker",
+  "productName": "MailChecker",
+  "version": "1.1.0",
+  "description": "MailChecker menubar app",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tborychowski/mailchecker.git"
+  },
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "start": "electron index.js",
+    "build": "build --mac",
+    "release": "build --mac --publish always"
+  },
+  "author": "Tom",
+  "license": "GPL-3.0-or-later",
+  "build": {
+    "appId": "com.electron.mailchecker",
+    "mac": {
+      "category": "public.app-category.mail"
+    },
+    "publish": [
+      "github"
+    ]
+  },
+  "dependencies": {
+    "electron-store": "^2.0.0",
+    "imap-simple": "^4.2.0"
+  },
+  "devDependencies": {
+    "electron": "3.0.8",
+    "electron-builder": "~20.34.0"
+  }
+}
