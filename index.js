@@ -2,6 +2,7 @@ const {init, setCount, notify, error} = require('./src/tray-app');
 const {getMail} = require('./src/imap');
 const settings = require('./src/settings');
 
+const freq = (parseFloat(settings.get().freq) || 5) * 60000;  // 60000 = 1 min
 
 
 function refresh () {
@@ -16,7 +17,6 @@ function updateCounter (emails) {
 	setCount(count);
 	notify(news);
 
-	const freq = (parseFloat(settings.get().freq) || 5) * 60000;  // 60000 = 1 min
 	setTimeout(refresh, freq);
 }
 
