@@ -11,8 +11,8 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "start": "electron index.js",
-    "build": "build --mac",
-    "release": "build --mac --publish always"
+    "build": "electron-builder --mac",
+    "release": "electron-builder --mac --publish always"
   },
   "author": "Tom",
   "license": "GPL-3.0-or-later",
@@ -26,11 +26,11 @@
     ]
   },
   "dependencies": {
-    "electron-store": "^2.0.0",
-    "imap-simple": "^4.2.0"
+    "electron-store": "^6.0.1",
+    "imap-simple": "^5.0.0"
   },
   "devDependencies": {
-    "electron": "3.0.8",
-    "electron-builder": "~20.34.0"
+    "electron": "10.1.5",
+    "electron-builder": "~22.9.1"
   }
 }

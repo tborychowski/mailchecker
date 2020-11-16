@@ -24,10 +24,11 @@ function toast ({from, ago, subject})  {
 
 
 function init (cb) {
-	refreshCb = cb;
+	refreshCb = cb || function () {};
 	app.dock.hide();
 	app.on('ready', () => {
 		tray = new Tray(ICON.EMPTY);
+		setMenu();
 		refreshCb();
 		if (settings.empty()) settings.open();
 	});
